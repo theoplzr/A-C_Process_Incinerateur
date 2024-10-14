@@ -1,0 +1,85 @@
+/* Style général */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+#previewContainer {
+    text-align: center;
+}
+
+#planContainer {
+    position: relative;
+    margin-top: 20px;
+}
+
+#plan {
+    cursor: crosshair;
+}
+
+.click-point {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: blue;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 0 5px #fff;
+}
+
+/* Formulaire popup */
+.form-popup {
+    position: absolute;
+    z-index: 999;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    width: 300px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form input {
+    margin-bottom: 10px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Style des conteneurs d'images */
+.image-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.image-container img {
+    margin-right: 10px;
+}
+
+button {
+    padding: 8px 12px;
+    margin-top: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #45a049;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incinerator Interactive Plan</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Charger le plan de l'incinérateur</h1>
+    <input type="file" id="uploadImage" accept="image/*">
+    <div id="previewContainer" style="display: none;">
+        <h2>Prévisualisation du plan</h2>
+        <img id="preview" src="#" alt="Prévisualisation" style="max-width: 100%;">
+        <br>
+        <button id="confirmImage">Confirmer</button>
+    </div>
+
+    <div id="planContainer" style="display: none;">
+        <img id="plan" src="#" alt="Plan de l'incinérateur" style="max-width: 100%;">
+    </div>
+
+    <!-- Formulaire popup -->
+    <!-- Formulaire popup -->
+    <div id="formPopup" class="form-popup" style="display: none;">
+        <form id="form" class="form">
+            <label for="question1">Question 1 :</label>
+            <input type="text" id="question1"><br>
+        
+            <label for="question2">Question 2 :</label>
+            <input type="text" id="question2"><br>
+
+            <!-- Nouveau champ pour télécharger des images -->
+            <label for="imageUpload">Ajouter une ou plusieurs photos :</label>
+            <input type="file" id="imageUpload" multiple accept="image/*"><br>
+
+            <!-- Prévisualisation des images -->
+            <div id="imagePreviewContainer"></div><br>
+
+            <!-- Nouveau bouton pour supprimer l'image -->
+            <button type="button" id="deleteImage">Supprimer l'image</button><br>
+
+            <button type="button" id="submitForm">Enregistrer</button>
+            <button type="button" id="deleteForm">Supprimer</button>
+        </form>
+    </div>
+
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
