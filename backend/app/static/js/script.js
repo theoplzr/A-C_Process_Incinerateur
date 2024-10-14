@@ -1,5 +1,47 @@
 let clickPoints = [];  // Stockage des points et formulaires
 
+// Sauvegarde dans localStorage
+function saveToLocalStorage() {
+    localStorage.setItem('clickPoints', JSON.stringify(clickPoints));
+}
+
+// Charger les points à partir de localStorage
+function loadFromLocalStorage() {
+    const savedPoints = JSON.parse(localStorage.getItem('clickPoints'));
+    if (savedPoints) {
+        savedPoints.forEach(pointData => {
+            let marker = document.createElement('div');
+            marker.classList.add('click-point');
+            marker.style.top = `${pointData.y - 5}px`;
+            marker.style.left = `${pointData.x - 5}px`;
+            document.getElementById('planContainer').appendChild(marker);
+
+            clickPoints.push(pointData);  // Ajoute les points dans le tableau clickPoints
+
+            attachFormEvents(marker, pointData);  // Attache les événements de formulaire
+        });
+    }
+}
+
+// Charger les points au démarrage
+document.addEventListener('DOMContentLoaded', loadFromLocalStorage);
+
+// Mettre à jour la liste des points dans l'interface
+function updatePointsList() {
+    const pointsList = document.getElementById('pointsList');
+    pointsList.innerHTML = '';  // Nettoyer la liste actuelle
+
+    clickPoints.forEach((pointData, index) => {
+        const listItem = document.createElement('li');
+        listItem.innerText = `Point ${index + 1} - X: ${pointData.x}, Y: ${pointData.y}`;
+        listItem.onclick = () => {
+            // Simuler un clic sur le point pour ouvrir le formulaire
+            document.querySelector(`.click-point:nth-child(${index + 1})`).click();
+        };
+        pointsList.appendChild(listItem);
+    });
+}
+
 document.getElementById('uploadImage').addEventListener('change', function(e) {
     const reader = new FileReader();
     reader.onload = function(event) {
@@ -60,6 +102,7 @@ function attachFormEvents(marker, pointData) {
                     // Supprimer l'image du tableau images
                     pointData.formData.images.splice(index, 1);  // Supprimer l'image du tableau
                     imageContainer.remove();  // Supprimer visuellement l'image
+                    saveToLocalStorage();  // Sauvegarder après suppression
                 };
 
                 imageContainer.appendChild(img);
@@ -85,11 +128,14 @@ function attachFormEvents(marker, pointData) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     pointData.formData.images.push(event.target.result);  // Stocker l'image
+                    saveToLocalStorage();  // Sauvegarder après ajout d'image
                 };
                 reader.readAsDataURL(file);  // Lire chaque image
             });
 
             formPopup.style.display = 'none';
+            saveToLocalStorage();  // Sauvegarder après modification du formulaire
+            updatePointsList();  // Mettre à jour la liste des points
         };
 
         // Lors de la suppression du formulaire
@@ -97,6 +143,8 @@ function attachFormEvents(marker, pointData) {
             marker.remove();  // Supprime le marqueur
             clickPoints = clickPoints.filter(p => p.id !== pointData.id);  // Retirer du tableau clickPoints
             formPopup.style.display = 'none';  // Ferme le formulaire
+            saveToLocalStorage();  // Sauvegarder après suppression
+            updatePointsList();  // Mettre à jour la liste des points
         };
     });
 }
@@ -126,4 +174,48 @@ document.getElementById('plan').addEventListener('click', function(e) {
 
     // Attacher les événements de chaque formulaire à son propre marqueur
     attachFormEvents(marker, pointData);
+    saveToLocalStorage();  // Sauvegarder après ajout d'un point
+    updatePointsList();  // Mettre à jour la liste des points
+});
+
+// Fonction pour télécharger l'image annotée
+document.getElementById('downloadImage').addEventListener('click', function() {
+    const planElement = document.getElementById('plan');
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = planElement.width;
+    canvas.height = planElement.height;
+
+    // Dessiner l'image du plan sur le canvas
+    ctx.drawImage(planElement, 0, 0, canvas.width, canvas.height);
+
+    // Dessiner chaque point sur le canvas
+    clickPoints.forEach(point => {
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, 10, 0, 2 * Math.PI, false);
+        ctx.fillStyle = 'blue';
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'white';
+        ctx.stroke();
+    });
+
+    // Convertir le canvas en image et la télécharger
+    const link = document.createElement('a');
+    link.download = 'image_annotée.png';
+    link.href = canvas.toDataURL();
+    link.click();
+});
+
+// Fonction pour exporter les données en PDF
+document.getElementById('exportPDF').addEventListener('click', function() {
+    const pdf = new jsPDF();
+    pdf.text('Liste des Points d\'inspection', 10, 10);
+    
+    clickPoints.forEach((point, index) => {
+        pdf.text(`Point ${index + 1}: X=${point.x}, Y=${point.y}`, 10, 20 + index * 10);
+    });
+    
+    pdf.save('points_inspection.pdf');
 });

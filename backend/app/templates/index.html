@@ -8,20 +8,23 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
+            <div class="logo-container">
+                <img src="{% static 'images/logo.png' %}" alt="A&C Process Logo" id="logo">
+            </div>
     <h1>Charger le plan de l'incinérateur</h1>
     <input type="file" id="uploadImage" accept="image/*">
+    
     <div id="previewContainer" style="display: none;">
         <h2>Prévisualisation du plan</h2>
-        <img id="preview" src="#" alt="Prévisualisation" style="max-width: 100%;">
+        <img id="preview" src="#" alt="Prévisualisation">
         <br>
         <button id="confirmImage">Confirmer</button>
     </div>
 
     <div id="planContainer" style="display: none;">
-        <img id="plan" src="#" alt="Plan de l'incinérateur" style="max-width: 100%;">
+        <img id="plan" src="#" alt="Plan de l'incinérateur">
     </div>
 
-    <!-- Formulaire popup -->
     <!-- Formulaire popup -->
     <div id="formPopup" class="form-popup" style="display: none;">
         <form id="form" class="form">
@@ -32,7 +35,7 @@
             <input type="text" id="question2"><br>
 
             <!-- Nouveau champ pour télécharger des images -->
-            <label for="imageUpload">Ajouter une ou plusieurs photos :</label>
+            <label for="imageUpload">Ajouter des photos :</label>
             <input type="file" id="imageUpload" multiple accept="image/*"><br>
 
             <!-- Prévisualisation des images -->
@@ -45,7 +48,6 @@
             <button type="button" id="deleteForm">Supprimer</button>
         </form>
     </div>
-
 
     <script src="{% static 'js/script.js' %}"></script>
 </body>
